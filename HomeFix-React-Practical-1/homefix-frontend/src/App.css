@@ -1,0 +1,101 @@
+:root {
+  --primary: #0d6efd;
+  --dark: #172033;
+  --light-bg: #f4f7fb;
+}
+
+body {
+  background: var(--light-bg);
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+}
+
+.stat-box,
+.custom-card {
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+}
+
+.stat-box {
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.stat-box:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0,0,0,.08);
+}
+
+.metric-icon {
+  font-size: 2rem;
+}
+
+.brand-icon {
+  font-size: 1.25rem;
+}
+
+.hero-title {
+  font-weight: 700;
+}
+
+.small-muted {
+  font-size: .82rem;
+  color: #6c757d;
+}
+.auth-container {
+  max-width: 400px;
+  margin: 30px auto;
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+}
+
+.auth-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.auth-tabs button {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.auth-tabs button.active {
+  background: #2563eb;
+  color: white;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.auth-form input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.auth-form > button {
+  padding: 10px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.auth-status {
+  font-size: 0.8rem;
+  color: #0f766e;
+  background: #ecfeff;
+  border: 1px solid #99f6e4;
+  border-radius: 6px;
+  padding: 8px 10px;
+  margin-top: 8px;
+}
