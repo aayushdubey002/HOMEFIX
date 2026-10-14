@@ -1,0 +1,12 @@
+# Local secrets and configuration
+**/application-local.properties
+**/.env
+
+# Build folders and dependencies
+**/target/
+**/node_modules/
+
+# Temporary error logs
+homefix-lab/api/build-error.txt
+homefix-lab/api/error.txt
+homefix-lab/api/run-error.txt

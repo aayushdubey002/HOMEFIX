@@ -1,0 +1,549 @@
+/* ==============================
+   HOMEFIX LOGIN / REGISTER PAGE
+============================== */
+
+.homefix-auth-page {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 25px;
+  background: #f2f5fa;
+  font-family: "Segoe UI", Arial, sans-serif;
+  box-sizing: border-box;
+}
+
+.homefix-auth-page *,
+.homefix-auth-page *::before,
+.homefix-auth-page *::after {
+  box-sizing: border-box;
+}
+
+.homefix-auth-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  max-width: 1050px;
+  min-height: 600px;
+  overflow: hidden;
+  border-radius: 22px;
+  background: #ffffff;
+  box-shadow: 0 18px 55px rgba(28, 49, 85, 0.13);
+}
+
+/* LEFT SIDE */
+
+.homefix-auth-left {
+  padding: 48px 55px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: #ffffff;
+}
+
+.homefix-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 42px;
+  color: #183b70;
+  font-size: 25px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.homefix-brand-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 43px;
+  height: 43px;
+  border-radius: 12px;
+  background: #eaf1ff;
+  color: #2864c5;
+  font-size: 24px;
+}
+
+.homefix-auth-heading {
+  margin: 0 0 10px;
+  color: #172b4d;
+  font-size: 32px;
+  font-weight: 750;
+  letter-spacing: -0.8px;
+}
+
+.homefix-auth-subtitle {
+  margin: 0 0 28px;
+  color: #7b879b;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+/* LOGIN / REGISTER TABS */
+
+.homefix-auth-tabs {
+  display: flex;
+  gap: 5px;
+  padding: 5px;
+  margin-bottom: 27px;
+  border-radius: 10px;
+  background: #f1f4f9;
+}
+
+.homefix-auth-tab {
+  flex: 1;
+  padding: 12px 10px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: #6e7b91;
+  font-size: 14px;
+  font-weight: 650;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.homefix-auth-tab.active {
+  background: #ffffff;
+  color: #2864c5;
+  box-shadow: 0 2px 8px rgba(26, 49, 85, 0.09);
+}
+
+.homefix-auth-tab:hover {
+  color: #2864c5;
+}
+
+/* FORM */
+
+.homefix-auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 19px;
+}
+
+.homefix-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.homefix-input-group label {
+  color: #34475b;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.homefix-input-group input {
+  width: 100%;
+  min-height: 48px;
+  padding: 13px 15px;
+  border: 1px solid #dce3ee;
+  border-radius: 9px;
+  outline: none;
+  background: #ffffff;
+  color: #26364d;
+  font-size: 14px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.homefix-input-group input::placeholder {
+  color: #a5afbf;
+}
+
+.homefix-input-group input:focus {
+  border-color: #3978df;
+  box-shadow: 0 0 0 3px rgba(57, 120, 223, 0.12);
+}
+
+/* SUBMIT BUTTON */
+
+.homefix-submit-btn {
+  width: 100%;
+  min-height: 49px;
+  margin-top: 5px;
+  border: none;
+  border-radius: 9px;
+  background: #2864c5;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.homefix-submit-btn:hover {
+  background: #1d50a5;
+  transform: translateY(-1px);
+}
+
+.homefix-submit-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* STATUS MESSAGE */
+
+.homefix-auth-status {
+  padding: 11px 13px;
+  border-radius: 8px;
+  background: #eef5ff;
+  color: #2456a4;
+  font-size: 13px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+/* SWITCH LOGIN / REGISTER */
+
+.homefix-auth-switch {
+  margin-top: 25px;
+  color: #7b879b;
+  text-align: center;
+  font-size: 13px;
+}
+
+.homefix-auth-switch button {
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: #2864c5;
+  font-size: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.homefix-auth-switch button:hover {
+  text-decoration: underline;
+}
+
+.homefix-auth-footer {
+  margin-top: 35px;
+  color: #a0a9b8;
+  font-size: 11px;
+  text-align: center;
+}
+
+/* ==============================
+   RIGHT SIDE ILLUSTRATION PANEL
+============================== */
+
+.homefix-auth-right {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  padding: 45px 35px;
+  background: linear-gradient(145deg, #3479e4, #17499c);
+  color: #ffffff;
+  text-align: center;
+}
+
+.homefix-auth-right::before {
+  content: "";
+  position: absolute;
+  top: -115px;
+  right: -95px;
+  width: 300px;
+  height: 300px;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 50%;
+}
+
+.homefix-auth-right::after {
+  content: "";
+  position: absolute;
+  bottom: -160px;
+  left: -100px;
+  width: 350px;
+  height: 350px;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 50%;
+}
+
+.homefix-art-circle {
+  position: absolute;
+  top: 50px;
+  left: 45px;
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.homefix-art-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+}
+
+.homefix-art-content h2 {
+  margin: 0 0 15px;
+  color: #ffffff;
+  font-size: 29px;
+  font-weight: 750;
+  line-height: 1.35;
+}
+
+.homefix-art-content > p {
+  max-width: 340px;
+  margin: 0 auto 30px;
+  color: rgba(255, 255, 255, 0.83);
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+/* CSS HOUSE ILLUSTRATION */
+
+.homefix-house-illustration {
+  position: relative;
+  width: 250px;
+  height: 210px;
+  margin: 10px auto 25px;
+}
+
+.homefix-house-roof {
+  position: absolute;
+  top: 15px;
+  left: 43px;
+  width: 164px;
+  height: 125px;
+  border-top: 10px solid #ffd36b;
+  border-left: 10px solid #ffd36b;
+  border-radius: 9px 0 0 0;
+  transform: rotate(45deg) scale(0.78);
+}
+
+.homefix-house {
+  position: absolute;
+  top: 82px;
+  left: 51px;
+  width: 148px;
+  height: 100px;
+  border: 7px solid #ffffff;
+  border-radius: 5px;
+  background: #eaf2ff;
+  box-shadow: 0 10px 25px rgba(5, 32, 78, 0.2);
+}
+
+.homefix-house-window {
+  position: absolute;
+  top: 17px;
+  left: 16px;
+  width: 35px;
+  height: 35px;
+  border: 4px solid #3479e4;
+  border-radius: 3px;
+  background: #b9ddff;
+}
+
+.homefix-house-window::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 12px;
+  width: 3px;
+  height: 27px;
+  background: #3479e4;
+}
+
+.homefix-house-window::after {
+  content: "";
+  position: absolute;
+  top: 11px;
+  left: 0;
+  width: 27px;
+  height: 3px;
+  background: #3479e4;
+}
+
+.homefix-house-door {
+  position: absolute;
+  right: 18px;
+  bottom: 0;
+  width: 35px;
+  height: 55px;
+  border: 4px solid #3479e4;
+  border-bottom: none;
+  border-radius: 5px 5px 0 0;
+  background: #ffd36b;
+}
+
+.homefix-house-door::after {
+  content: "";
+  position: absolute;
+  top: 25px;
+  right: 4px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #3479e4;
+}
+
+.homefix-house-base {
+  position: absolute;
+  bottom: 18px;
+  left: 25px;
+  width: 200px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* SERVICE LABELS */
+
+.homefix-service-pills {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.homefix-service-pills span {
+  padding: 9px 13px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.homefix-art-bottom {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  left: 20px;
+  z-index: 2;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 11px;
+  letter-spacing: 0.4px;
+}
+
+/* ==============================
+   RESPONSIVE DESIGN
+============================== */
+
+@media (max-width: 900px) {
+  .homefix-auth-left {
+    padding: 38px 30px;
+  }
+
+  .homefix-auth-right {
+    padding: 35px 20px;
+  }
+
+  .homefix-auth-heading {
+    font-size: 28px;
+  }
+
+  .homefix-art-content h2 {
+    font-size: 25px;
+  }
+
+  .homefix-house-illustration {
+    transform: scale(0.9);
+    margin-top: 0;
+    margin-bottom: 10px;
+  }
+}
+
+@media (max-width: 650px) {
+  .homefix-auth-page {
+    min-height: 100vh;
+    padding: 15px;
+  }
+
+  .homefix-auth-card {
+    grid-template-columns: 1fr;
+    max-width: 440px;
+    min-height: auto;
+    border-radius: 18px;
+  }
+
+  .homefix-auth-left {
+    padding: 32px 25px;
+  }
+
+  .homefix-brand {
+    margin-bottom: 28px;
+    font-size: 23px;
+  }
+
+  .homefix-auth-heading {
+    font-size: 27px;
+  }
+
+  .homefix-auth-right {
+    min-height: 390px;
+    padding: 35px 20px 50px;
+  }
+
+  .homefix-art-content h2 {
+    font-size: 24px;
+  }
+
+  .homefix-art-content > p {
+    font-size: 13px;
+    margin-bottom: 15px;
+  }
+
+  .homefix-house-illustration {
+    transform: scale(0.85);
+    margin-top: -5px;
+    margin-bottom: 0;
+  }
+
+  .homefix-art-bottom {
+    bottom: 15px;
+  }
+}
+
+@media (max-width: 380px) {
+  .homefix-auth-left {
+    padding: 28px 19px;
+  }
+
+  .homefix-auth-heading {
+    font-size: 24px;
+  }
+
+  .homefix-auth-right {
+    min-height: 360px;
+  }
+
+  .homefix-service-pills {
+    gap: 6px;
+  }
+
+  .homefix-service-pills span {
+    padding: 8px 10px;
+    font-size: 11px;
+  }
+}
+/* ACCOUNT TYPE SELECT */
+.homefix-role-select {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 15px;
+  border: 1px solid #dce3ee;
+  border-radius: 9px;
+  outline: none;
+  background: #ffffff;
+  color: #26364d;
+  font-size: 14px;
+}
+
+.homefix-role-select:focus {
+  border-color: #3978df;
+  box-shadow: 0 0 0 3px rgba(57, 120, 223, 0.12);
+}
+
+.homefix-field-hint {
+  color: #7b879b;
+  font-size: 12px;
+}

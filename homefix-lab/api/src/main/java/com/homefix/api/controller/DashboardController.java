@@ -5,12 +5,16 @@ import com.homefix.api.model.User;
 import com.homefix.api.repository.BookingRepository;
 import com.homefix.api.repository.HomeServiceRepository;
 import com.homefix.api.repository.UserRepository;
+
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "*")
 public class DashboardController {
 
     private final UserRepository userRepository;
@@ -29,10 +33,13 @@ public class DashboardController {
 
     @GetMapping("/dashboard/stats")
     public ResponseEntity<DashboardStats> getDashboardStats(
-            @RequestParam(required = false) Long userId) {
+            @AuthenticationPrincipal Jwt jwt) {
 
-        if (userId == null) {
-            return ResponseEntity.badRequest().build();
+        Long userId;
+        try {
+            userId = Long.valueOf(jwt.getSubject());
+        } catch (NumberFormatException | NullPointerException exception) {
+            return ResponseEntity.status(401).build();
         }
 
         User user = userRepository.findById(userId).orElse(null);
@@ -41,19 +48,25 @@ public class DashboardController {
             return ResponseEntity.badRequest().build();
         }
 
-        int totalCustomers =
-                (int) userRepository.count();
+        int totalCustomers = Math.toIntExact(
+                userRepository.count()
+        );
 
-        int activeProviders =
-                (int) homeServiceRepository.countByStatusIgnoreCase("active");
+        int activeProviders = Math.toIntExact(
+                homeServiceRepository.countByStatusIgnoreCase("active")
+        );
 
-        // Total bookings for the current user
-        int totalBookings =
-                (int) bookingRepository.countByUser(user);
+        // Count bookings belonging to this customer
+        int totalBookings = Math.toIntExact(
+                bookingRepository.countByUser(user)
+        );
 
-        // Total pending requests from database
-        int pendingRequests =
-                (int) bookingRepository.countByUserAndStatus(user, "PENDING");
+        // Count this customer's pending requests
+        int pendingRequests = Math.toIntExact(
+                bookingRepository.countByUserAndStatusIgnoreCase(
+                        user, "PENDING"
+                )
+        );
 
         DashboardStats stats = new DashboardStats(
                 totalCustomers,

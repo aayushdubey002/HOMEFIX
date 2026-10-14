@@ -1,129 +1,180 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from "react";
 
-function ServiceRequestForm({ handleRequest }) {
+function localDateString(date = new Date()) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+function ServiceRequestForm({ service, user, onSubmit }) {
   const [formData, setFormData] = useState({
-    customerName: '',
-    service: '',
-    address: '',
-    preferredDate: '',
-    notes: ''
+    customerName: user.fullName || "",
+    service: service.requestService,
+    phone: user.phone || "",
+    address: "",
+    preferredDate: "",
+    notes: "",
   });
-
   const [busy, setBusy] = useState(false);
+  const [status, setStatus] = useState("");
+  const submissionInProgress = useRef(false);
 
-  const onInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+  const onInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((previous) => ({ ...previous, [name]: value }));
+    if (status) setStatus("");
   };
 
-  const onFormSubmit = async (e) => {
-    e.preventDefault();
-    setBusy(true);
+  const onFormSubmit = async (event) => {
+    event.preventDefault();
+    if (submissionInProgress.current) return;
 
+    if (formData.preferredDate < localDateString()) {
+      setStatus("Choose today or a future preferred date.");
+      return;
+    }
+
+    submissionInProgress.current = true;
+    setBusy(true);
+    setStatus("");
     try {
-      await handleRequest(formData);
-      setFormData({
-        customerName: '',
-        service: '',
-        address: '',
-        preferredDate: '',
-        notes: ''
+      await onSubmit({
+        ...formData,
+        customerName: formData.customerName.trim(),
+        address: formData.address.trim(),
+        notes: formData.notes.trim(),
+        price: service.startingPrice,
       });
+    } catch (error) {
+      setStatus(
+        error.response?.data?.message
+          || error.message
+          || "Unable to save your booking. Please try again."
+      );
     } finally {
+      submissionInProgress.current = false;
       setBusy(false);
     }
   };
 
   return (
-    <div className="custom-card shadow-sm p-3">
-      <h6 className="fw-bold text-dark mb-3">
-        <i className="bi bi-wrench-adjustable-circle me-2 text-primary"></i>
-        Request Home Service
-      </h6>
+    <section className="custom-card service-form-card" aria-labelledby="booking-form-title">
+      <div className="service-form-header">
+        <div className="service-form-icon" aria-hidden="true">
+          <i className="bi bi-calendar2-check"></i>
+        </div>
+        <div>
+          <span className="eyebrow">SIMPLE, SECURE BOOKING</span>
+          <h2 id="booking-form-title">Book {service.name}</h2>
+          <p className="small-muted">Tell us what you need and when it works for you.</p>
+        </div>
+      </div>
 
-      <form onSubmit={onFormSubmit}>
-        <div className="mb-2">
-          <label className="form-label small text-muted">Customer Name</label>
+      <form onSubmit={onFormSubmit} className="service-form">
+        <div className="form-field">
+          <label htmlFor="customerName" className="form-label">Customer name</label>
           <input
+            id="customerName"
             type="text"
             name="customerName"
-            className="form-control form-control-sm"
+            className="form-control"
             value={formData.customerName}
             onChange={onInputChange}
-            placeholder="Enter full name"
+            placeholder="Enter your full name"
+            autoComplete="name"
+            maxLength={120}
             required
           />
         </div>
 
-        <div className="mb-2">
-          <label className="form-label small text-muted">Service</label>
-          <select
-            name="service"
-            className="form-select form-select-sm"
-            value={formData.service}
+        <div className="form-field">
+          <label htmlFor="phone" className="form-label">Phone number</label>
+          <input
+            id="phone"
+            type="tel"
+            name="phone"
+            className="form-control"
+            value={formData.phone}
             onChange={onInputChange}
+            placeholder="Enter your 10-digit phone number"
+            autoComplete="tel"
+            inputMode="numeric"
+            pattern="[0-9]{10}"
+            maxLength={10}
+            title="Enter a 10-digit phone number"
             required
-          >
-            <option value="">Select service...</option>
-            <option value="Plumbing">Plumbing</option>
-            <option value="Electrical">Electrical</option>
-            <option value="Cleaning">Cleaning</option>
-            <option value="AC Repair">AC Repair</option>
-            <option value="Appliance Repair">Appliance Repair</option>
-          </select>
+          />
         </div>
 
-        <div className="mb-2">
-          <label className="form-label small text-muted">Address</label>
+        <div className="form-field form-field-wide">
+          <label htmlFor="address" className="form-label">Service address</label>
           <textarea
+            id="address"
             name="address"
-            className="form-control form-control-sm"
+            className="form-control"
             rows="2"
             value={formData.address}
             onChange={onInputChange}
-            placeholder="Enter service address"
+            placeholder="Enter the complete address for the service"
+            autoComplete="street-address"
+            maxLength={500}
             required
           />
         </div>
 
-        <div className="mb-2">
-          <label className="form-label small text-muted">Preferred Date</label>
+        <div className="form-field">
+          <label htmlFor="preferredDate" className="form-label">Preferred date</label>
           <input
+            id="preferredDate"
             type="date"
             name="preferredDate"
-            className="form-control form-control-sm"
+            className="form-control"
             value={formData.preferredDate}
             onChange={onInputChange}
+            min={localDateString()}
             required
           />
         </div>
 
-        <div className="mb-3">
-          <label className="form-label small text-muted">Remarks</label>
-          <input
-            type="text"
+        <div className="form-field form-field-wide">
+          <label htmlFor="notes" className="form-label">
+            Describe the problem <span className="text-secondary">(Optional)</span>
+          </label>
+          <textarea
+            id="notes"
             name="notes"
-            className="form-control form-control-sm"
+            className="form-control"
+            rows="3"
             value={formData.notes}
             onChange={onInputChange}
-            placeholder="Describe the problem"
+            placeholder="Share any helpful details about the work needed"
+            maxLength={2000}
           />
         </div>
 
-        <button type="submit" className="btn btn-primary btn-sm w-100 fw-bold" disabled={busy}>
+        <div className="starting-price" role="status">
+          <span className="price-icon" aria-hidden="true"><i className="bi bi-tag"></i></span>
+          <span><small>{service.name} starting from</small><strong>₹{service.startingPrice}</strong></span>
+          <small className="price-note">The server confirms the saved booking price.</small>
+        </div>
+
+        {status && <p className="booking-form-error" role="alert">{status}</p>}
+
+        <button type="submit" className="service-submit-btn" disabled={busy}>
           {busy ? (
-            <>
-              <span className="spinner-border spinner-border-sm me-2"></span>
-              Submitting...
-            </>
+            <><span className="spinner-border spinner-border-sm" aria-hidden="true"></span> Saving booking...</>
           ) : (
-            <>
-              <i className="bi bi-send me-1"></i>Request Service
-            </>
+            <><i className="bi bi-check2-circle" aria-hidden="true"></i> Confirm Booking</>
           )}
         </button>
+
+        <p className="form-privacy-note">
+          <i className="bi bi-shield-check me-1"></i>
+          Your details are only used to arrange your service.
+        </p>
       </form>
-    </div>
+    </section>
   );
 }
 

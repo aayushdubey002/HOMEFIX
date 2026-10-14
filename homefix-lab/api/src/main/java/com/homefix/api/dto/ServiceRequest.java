@@ -1,8 +1,10 @@
 package com.homefix.api.dto;
 
 public class ServiceRequest {
+
     private String customerName;
     private String service;
+    private String phone;
     private String address;
     private String preferredDate;
     private String notes;
@@ -26,6 +28,14 @@ public class ServiceRequest {
         this.service = service;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     public String getAddress() {
         return address;
     }
@@ -36,10 +46,9 @@ public class ServiceRequest {
 
     public String getPreferredDate() {
         return preferredDate;
-    }    
-    
-    
-  public void setPreferredDate(String preferredDate) {
+    }
+
+    public void setPreferredDate(String preferredDate) {
         this.preferredDate = preferredDate;
     }
 

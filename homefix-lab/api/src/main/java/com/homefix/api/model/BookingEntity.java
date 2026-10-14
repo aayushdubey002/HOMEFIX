@@ -16,9 +16,23 @@ public class BookingEntity {
     private String providerName;
     private String status;
 
+    private String address;
+    private String preferredDate;
+    private String phone;
+
+    // Service starting price in rupees
+    private Integer price;
+
+    @Column(length = 2000)
+    private String notes;
+
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "provider_id")
+    private User provider;
 
     public BookingEntity() {
     }
@@ -83,11 +97,59 @@ public class BookingEntity {
         this.status = status;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPreferredDate() {
+        return preferredDate;
+    }
+
+    public void setPreferredDate(String preferredDate) {
+        this.preferredDate = preferredDate;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public Integer getPrice() {
+        return price;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
     public User getUser() {
         return user;
     }
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public User getProvider() {
+        return provider;
+    }
+
+    public void setProvider(User provider) {
+        this.provider = provider;
     }
 }

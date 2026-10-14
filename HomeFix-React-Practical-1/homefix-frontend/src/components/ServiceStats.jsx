@@ -1,63 +1,72 @@
-import React from 'react';
+import React from "react";
 
 function ServiceStats({ stats }) {
+  const cards = [
+    {
+      title: "Total Customers",
+      value: stats.totalCustomers,
+      icon: "bi-people",
+      color: "primary",
+      description: "Registered customers"
+    },
+    {
+      title: "Active Providers",
+      value: stats.activeProviders,
+      icon: "bi-person-check",
+      color: "success",
+      description: "Service providers"
+    },
+    {
+      title: "Total Bookings",
+      value: stats.totalBookings,
+      icon: "bi-calendar-check",
+      color: "warning",
+      description: "Service requests"
+    },
+    {
+      title: "Pending Requests",
+      value: stats.pendingRequests,
+      icon: "bi-hourglass-split",
+      color: "danger",
+      description: "Awaiting processing"
+    }
+  ];
+
   return (
     <div className="row g-3 mb-4">
-      <div className="col-12 col-sm-6 col-md-3">
-        <div className="p-3 stat-box border-start border-primary border-4">
-          <div className="d-flex justify-content-between align-items-center">
-            <div>
-              <span className="text-secondary small fw-bold text-uppercase">
-                Total Customers
-              </span>
-              <h4 className="fw-bold mt-1 mb-0">{stats.totalCustomers}</h4>
-            </div>
-            <i className="bi bi-people text-primary metric-icon"></i>
-          </div>
-        </div>
-      </div>
+      {cards.map((card) => (
+        <div
+          className="col-12 col-sm-6 col-xl-3"
+          key={card.title}
+        >
+          <div className="stat-box h-100 p-3">
+            <div className="d-flex justify-content-between align-items-start">
+              <div>
+                <p className="text-secondary small fw-semibold mb-2">
+                  {card.title}
+                </p>
 
-      <div className="col-12 col-sm-6 col-md-3">
-        <div className="p-3 stat-box border-start border-success border-4">
-          <div className="d-flex justify-content-between align-items-center">
-            <div>
-              <span className="text-secondary small fw-bold text-uppercase">
-                Active Providers
-              </span>
-              <h4 className="fw-bold mt-1 mb-0">{stats.activeProviders}</h4>
-            </div>
-            <i className="bi bi-person-check text-success metric-icon"></i>
-          </div>
-        </div>
-      </div>
+                <h3 className="fw-bold mb-2">
+                  {card.value ?? 0}
+                </h3>
 
-      <div className="col-12 col-sm-6 col-md-3">
-        <div className="p-3 stat-box border-start border-warning border-4">
-          <div className="d-flex justify-content-between align-items-center">
-            <div>
-              <span className="text-secondary small fw-bold text-uppercase">
-                Total Bookings
-              </span>
-              <h4 className="fw-bold mt-1 mb-0">{stats.totalBookings}</h4>
-            </div>
-            <i className="bi bi-calendar-check text-warning metric-icon"></i>
-          </div>
-        </div>
-      </div>
+                <span className="small-muted">
+                  {card.description}
+                </span>
+              </div>
 
-      <div className="col-12 col-sm-6 col-md-3">
-        <div className="p-3 stat-box border-start border-danger border-4">
-          <div className="d-flex justify-content-between align-items-center">
-            <div>
-              <span className="text-secondary small fw-bold text-uppercase">
-                Pending Requests
-              </span>
-              <h4 className="fw-bold mt-1 mb-0">{stats.pendingRequests}</h4>
+              <div
+                className={`rounded-3 p-3 bg-${card.color}-subtle`}
+              >
+                <i
+                  className={`bi ${card.icon} text-${card.color} metric-icon`}
+                  aria-hidden="true"
+                />
+              </div>
             </div>
-            <i className="bi bi-hourglass-split text-danger metric-icon"></i>
           </div>
         </div>
-      </div>
+      ))}
     </div>
   );
 }
