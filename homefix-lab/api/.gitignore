@@ -36,3 +36,4 @@ build/
 .env.txt
 .env.*
 !.env.example
+.env.txt
