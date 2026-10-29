@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, Navigate, useParams } from "react-router-dom";
+import { Link, Navigate, useLocation, useParams } from "react-router-dom";
 import ServiceRequestForm from "../components/ServiceRequestForm";
 import { findService } from "../services/serviceCatalog";
 
@@ -12,6 +12,7 @@ export default function ServiceBookingPage({
   onSubmit,
 }) {
   const { serviceSlug } = useParams();
+  const location = useLocation();
   const service = findService(serviceSlug, services);
 
   if (servicesLoading) {
@@ -38,8 +39,15 @@ export default function ServiceBookingPage({
       </Link>
 
       <section className="service-detail-banner">
-        <span className="service-detail-icon" aria-hidden="true">
-          <i className={service.icon}></i>
+        <span className="service-detail-icon">
+          <img
+            src={service.image}
+            alt={`${service.name} service`}
+            onError={(event) => {
+              event.currentTarget.hidden = true;
+            }}
+          />
+          <i className={service.icon} aria-hidden="true"></i>
         </span>
         <div>
           <span className="eyebrow">HOMEFIX SERVICE</span>
@@ -56,6 +64,7 @@ export default function ServiceBookingPage({
         key={service.slug}
         service={service}
         user={user}
+        savedAddress={location.state?.savedAddress}
         onSubmit={onSubmit}
       />
     </main>

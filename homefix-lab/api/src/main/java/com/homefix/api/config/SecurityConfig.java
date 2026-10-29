@@ -16,7 +16,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -72,7 +71,9 @@ public class SecurityConfig {
         JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
         converter.setJwtGrantedAuthoritiesConverter(jwt -> {
             String role = jwt.getClaimAsString("role");
-            if (!"CUSTOMER".equals(role) && !"PROVIDER".equals(role)) {
+            if (!"CUSTOMER".equals(role)
+                    && !"PROVIDER".equals(role)
+                    && !"ADMIN".equals(role)) {
                 return List.of();
             }
             return List.of(new SimpleGrantedAuthority("ROLE_" + role));
@@ -86,7 +87,7 @@ public class SecurityConfig {
             Converter<Jwt, ? extends AbstractAuthenticationToken> jwtAuthenticationConverter
     ) throws Exception {
         return http
-                .csrf(AbstractHttpConfigurer::disable)
+                .csrf(csrf -> csrf.ignoringRequestMatchers("/api/**"))
                 .cors(Customizer.withDefaults())
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -94,7 +95,24 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers(HttpMethod.POST,
                                 "/api/auth/register", "/api/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/services/catalog").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/payments/razorpay/webhook").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/payments/config").permitAll()
+                        .requestMatchers(HttpMethod.POST,
+                                "/api/payments/razorpay/orders/**",
+                                "/api/payments/razorpay/transactions/**").hasRole("CUSTOMER")
+                        .requestMatchers(HttpMethod.GET,
+                                "/api/payments/razorpay/bookings/**").hasRole("CUSTOMER")
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/providers/*/approval").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET,
+                                "/api/services/catalog",
+                                "/api/services/catalog/images/**",
+                                "/api/location/config").permitAll()
+                        .requestMatchers("/api/customer/**").hasRole("CUSTOMER")
+                        .requestMatchers("/api/provider/**").hasRole("PROVIDER")
+                        .requestMatchers("/api/support/tickets/**")
+                                .hasAnyRole("CUSTOMER", "PROVIDER", "ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/admin/reports/**").hasRole("ADMIN")
                         .requestMatchers("/actuator/health").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/service-requests",
                                 "/api/bookings/create").hasRole("CUSTOMER")
@@ -102,7 +120,13 @@ public class SecurityConfig {
                                 "/api/bookings/recent").hasRole("CUSTOMER")
                         .requestMatchers(HttpMethod.PUT,
                                 "/api/service-requests/*/accept",
-                                "/api/service-requests/*/reject").hasRole("PROVIDER")
+                                "/api/service-requests/*/reject",
+                                "/api/service-requests/*/status").hasRole("PROVIDER")
+                        .requestMatchers(HttpMethod.PUT,
+                                "/api/service-requests/*/cancel")
+                                .hasAnyRole("CUSTOMER", "PROVIDER")
+                        .requestMatchers(HttpMethod.POST,
+                                "/api/service-requests/*/review").hasRole("CUSTOMER")
                         .requestMatchers(HttpMethod.POST, "/api/services").hasRole("PROVIDER")
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(resourceServer -> resourceServer
@@ -120,7 +144,9 @@ public class SecurityConfig {
                 .filter(origin -> !origin.isEmpty())
                 .toList());
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+        configuration.setAllowedHeaders(List.of(
+                "Authorization", "Content-Type", "Idempotency-Key",
+                "X-Razorpay-Signature", "X-Razorpay-Event-Id"));
         configuration.setAllowCredentials(false);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

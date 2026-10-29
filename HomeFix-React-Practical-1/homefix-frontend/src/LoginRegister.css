@@ -1,17 +1,18 @@
-/* ==============================
-   HOMEFIX LOGIN / REGISTER PAGE
-============================== */
-
 .homefix-auth-page {
-  min-height: 100vh;
-  width: 100%;
+  --auth-ink: #172b4d;
+  --auth-muted: #5e6f86;
+  --auth-blue: #2867cc;
+  --auth-border: #e2e9f2;
+  align-items: center;
+  background:
+    radial-gradient(ellipse at 12% 10%, rgb(218 233 255 / 62%), transparent 34%),
+    linear-gradient(135deg, #f8faff 0%, #edf3fa 100%);
+  box-sizing: border-box;
   display: flex;
   justify-content: center;
-  align-items: center;
-  padding: 25px;
-  background: #f2f5fa;
-  font-family: "Segoe UI", Arial, sans-serif;
-  box-sizing: border-box;
+  min-height: 100vh;
+  padding: 32px;
+  width: 100%;
 }
 
 .homefix-auth-page *,
@@ -21,197 +22,427 @@
 }
 
 .homefix-auth-card {
+  background: #fff;
+  border: 1px solid rgb(226 233 242 / 82%);
+  border-radius: 28px;
+  box-shadow: 0 30px 90px rgb(29 55 94 / 13%), 0 4px 14px rgb(29 55 94 / 5%);
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  width: 100%;
-  max-width: 1050px;
-  min-height: 600px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.94fr);
+  max-width: 1190px;
+  min-height: 690px;
   overflow: hidden;
-  border-radius: 22px;
-  background: #ffffff;
-  box-shadow: 0 18px 55px rgba(28, 49, 85, 0.13);
+  width: 100%;
 }
 
-/* LEFT SIDE */
-
 .homefix-auth-left {
-  padding: 48px 55px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  background: #ffffff;
+  align-self: center;
+  margin: 0 auto;
+  max-width: 530px;
+  padding: 48px 56px 38px;
+  width: 100%;
 }
 
 .homefix-brand {
-  display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 42px;
-  color: #183b70;
-  font-size: 25px;
-  font-weight: 800;
-  letter-spacing: -0.5px;
+  color: #173a6d;
+  display: inline-flex;
+  gap: 11px;
+  margin-bottom: 38px;
+  text-decoration: none;
+  width: fit-content;
 }
 
 .homefix-brand-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 43px;
+  display: block;
+  flex: 0 0 43px;
   height: 43px;
-  border-radius: 12px;
-  background: #eaf1ff;
-  color: #2864c5;
-  font-size: 24px;
+  width: 43px;
+}
+
+.homefix-brand-copy {
+  display: grid;
+  gap: 1px;
+}
+
+.homefix-brand-name {
+  color: #173a6d;
+  font-size: 23px;
+  font-weight: 780;
+  letter-spacing: -0.8px;
+  line-height: 1.1;
+}
+
+.homefix-brand-copy small {
+  color: #71839a;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .01em;
 }
 
 .homefix-auth-heading {
-  margin: 0 0 10px;
-  color: #172b4d;
-  font-size: 32px;
+  margin-bottom: 22px;
+}
+
+.homefix-eyebrow {
+  color: #426d9f;
+  display: block;
+  font-size: 11px;
   font-weight: 750;
-  letter-spacing: -0.8px;
+  letter-spacing: 1.65px;
+  margin-bottom: 9px;
+}
+
+.homefix-auth-heading h1 {
+  color: var(--auth-ink);
+  font-size: clamp(29px, 3vw, 35px);
+  font-weight: 750;
+  letter-spacing: -1.15px;
+  line-height: 1.2;
+  margin: 0 0 8px;
 }
 
 .homefix-auth-subtitle {
-  margin: 0 0 28px;
-  color: #7b879b;
-  font-size: 14px;
-  line-height: 1.7;
+  color: var(--auth-muted);
+  font-size: 15px;
+  line-height: 1.65;
+  margin: 0;
 }
 
-/* LOGIN / REGISTER TABS */
-
-.homefix-auth-tabs {
-  display: flex;
-  gap: 5px;
-  padding: 5px;
-  margin-bottom: 27px;
-  border-radius: 10px;
-  background: #f1f4f9;
+.homefix-role-field {
+  margin-bottom: 19px;
 }
 
-.homefix-auth-tab {
-  flex: 1;
-  padding: 12px 10px;
-  border: none;
-  border-radius: 8px;
-  background: transparent;
-  color: #6e7b91;
-  font-size: 14px;
-  font-weight: 650;
+.homefix-field-label,
+.homefix-input-group label {
+  color: #263b58;
+  display: block;
+  font-size: 13px;
+  font-weight: 680;
+  margin-bottom: 8px;
+}
+
+.homefix-role-options {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.homefix-role-option {
+  align-items: center;
+  background: #fff;
+  border: 1px solid var(--auth-border);
+  border-radius: 12px;
+  color: #334762;
   cursor: pointer;
-  transition: all 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  justify-content: center;
+  min-height: 78px;
+  padding: 8px 6px;
+  position: relative;
+  text-align: center;
+  transition: background 160ms ease, border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
 }
 
-.homefix-auth-tab.active {
-  background: #ffffff;
-  color: #2864c5;
-  box-shadow: 0 2px 8px rgba(26, 49, 85, 0.09);
+.homefix-role-option:hover {
+  border-color: #b6cbea;
+  transform: translateY(-1px);
 }
 
-.homefix-auth-tab:hover {
-  color: #2864c5;
+.homefix-role-option:focus-visible,
+.homefix-auth-page button:focus-visible,
+.homefix-auth-page a:focus-visible {
+  outline: 3px solid rgb(46 116 211 / 28%);
+  outline-offset: 3px;
 }
 
-/* FORM */
+.homefix-role-option.is-selected {
+  background: #f3f8ff;
+  border-color: #74a4e7;
+  box-shadow: inset 0 0 0 1px rgb(63 126 214 / 12%), 0 3px 9px rgb(35 87 154 / 7%);
+  color: #1d59a4;
+}
+
+.homefix-role-icon {
+  align-items: center;
+  background: #f0f4f9;
+  border-radius: 9px;
+  color: #6a7d96;
+  display: inline-flex;
+  flex: 0 0 31px;
+  font-size: 14px;
+  height: 31px;
+  justify-content: center;
+}
+
+.homefix-role-option.is-selected .homefix-role-icon {
+  background: #e1edff;
+  color: #2568c6;
+}
+
+.homefix-role-copy {
+  display: block;
+  min-width: 0;
+  width: 100%;
+}
+
+.homefix-role-copy strong {
+  color: inherit;
+  display: block;
+  font-size: 11px;
+  font-weight: 720;
+  line-height: 1.3;
+  white-space: normal;
+}
+
+.homefix-role-copy small {
+  color: #64748b;
+  display: block;
+  font-size: 10px;
+  line-height: 1.25;
+  margin-top: 2px;
+  white-space: normal;
+}
+
+.homefix-role-check {
+  color: #2870ce;
+  display: none;
+  font-size: 12px;
+  position: absolute;
+  right: 7px;
+  top: 6px;
+}
+
+.homefix-role-option.is-selected .homefix-role-check {
+  display: block;
+}
 
 .homefix-auth-form {
   display: flex;
   flex-direction: column;
-  gap: 19px;
+  gap: 13px;
 }
 
 .homefix-input-group {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 0;
+  min-width: 0;
 }
 
 .homefix-input-group label {
-  color: #34475b;
-  font-size: 13px;
-  font-weight: 650;
+  margin-bottom: 6px;
 }
 
-.homefix-input-group input {
-  width: 100%;
-  min-height: 48px;
-  padding: 13px 15px;
-  border: 1px solid #dce3ee;
-  border-radius: 9px;
-  outline: none;
-  background: #ffffff;
-  color: #26364d;
+.homefix-input-wrap {
+  align-items: center;
+  background: #fff;
+  border: 1px solid #dce4ef;
+  border-radius: 10px;
+  display: flex;
+  min-height: 46px;
+  position: relative;
+  transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+}
+
+.homefix-input-wrap:focus-within {
+  background: #fff;
+  border-color: #4a87d8;
+  box-shadow: 0 0 0 3px rgb(57 120 223 / 12%);
+}
+
+.homefix-input-icon {
+  color: #71819a;
+  flex: 0 0 auto;
   font-size: 14px;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  margin-left: 14px;
+  pointer-events: none;
 }
 
-.homefix-input-group input::placeholder {
-  color: #a5afbf;
+.homefix-input-wrap input,
+.homefix-input-wrap select {
+  background: transparent;
+  border: 0;
+  border-radius: inherit;
+  color: #1d304b;
+  flex: 1;
+  font: inherit;
+  font-size: 14px;
+  min-height: 44px;
+  min-width: 0;
+  outline: none;
+  padding: 10px 13px 10px 11px;
+  width: 100%;
 }
 
-.homefix-input-group input:focus {
-  border-color: #3978df;
-  box-shadow: 0 0 0 3px rgba(57, 120, 223, 0.12);
+.homefix-input-wrap input::placeholder {
+  color: #8795a8;
 }
 
-/* SUBMIT BUTTON */
+.homefix-input-wrap select {
+  appearance: none;
+  cursor: pointer;
+}
+
+.homefix-select-wrap::after {
+  color: #7d8da4;
+  content: "\F282";
+  font-family: "bootstrap-icons";
+  font-size: 12px;
+  margin-right: 14px;
+  pointer-events: none;
+}
+
+.homefix-password-wrap input {
+  padding-right: 5px;
+}
+
+.homefix-password-toggle {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+  color: #71819a;
+  cursor: pointer;
+  display: inline-flex;
+  flex: 0 0 38px;
+  font-size: 15px;
+  height: 38px;
+  justify-content: center;
+  margin-right: 4px;
+}
+
+.homefix-password-toggle:hover {
+  background: #f2f6fb;
+  color: var(--auth-blue);
+}
+
+.homefix-field-hint,
+.homefix-input-group > small {
+  color: #61728a;
+  font-size: 11px;
+  line-height: 1.5;
+  margin-top: 5px;
+}
+
+.homefix-inline-error {
+  color: #b83e49 !important;
+}
+
+.homefix-auth-status,
+.homefix-admin-notice {
+  align-items: flex-start;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  display: flex;
+  font-size: 13px;
+  gap: 9px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  padding: 10px 12px;
+}
+
+.homefix-auth-status > i,
+.homefix-admin-notice > i {
+  flex: 0 0 auto;
+  margin-top: 1px;
+}
+
+.homefix-auth-status.is-error {
+  background: #fff3f2;
+  border-color: #f5d6d3;
+  color: #a23b39;
+}
+
+.homefix-auth-status.is-success {
+  background: #effaf4;
+  border-color: #d3efde;
+  color: #26734b;
+}
+
+.homefix-auth-status.is-info,
+.homefix-admin-notice {
+  background: #f1f7ff;
+  border-color: #dbe9fb;
+  color: #315d91;
+}
+
+.homefix-admin-notice {
+  font-size: 13px;
+  margin: 3px 0 20px;
+  padding: 14px;
+}
+
+.homefix-admin-notice > i {
+  font-size: 16px;
+}
 
 .homefix-submit-btn {
-  width: 100%;
-  min-height: 49px;
-  margin-top: 5px;
-  border: none;
-  border-radius: 9px;
-  background: #2864c5;
-  color: #ffffff;
+  align-items: center;
+  background: linear-gradient(110deg, #2d70d2, #235cb8);
+  border: 0;
+  border-radius: 10px;
+  box-shadow: 0 7px 16px rgb(36 97 187 / 20%);
+  color: #fff;
+  cursor: pointer;
+  display: flex;
   font-size: 15px;
   font-weight: 700;
-  cursor: pointer;
-  transition: background 0.2s, transform 0.2s;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 3px;
+  min-height: 47px;
+  padding: 11px 16px;
+  transition: box-shadow 160ms ease, filter 160ms ease, transform 160ms ease;
+  width: 100%;
 }
 
-.homefix-submit-btn:hover {
-  background: #1d50a5;
+.homefix-submit-btn > i {
+  font-size: 15px;
+}
+
+.homefix-submit-btn:hover:not(:disabled) {
+  box-shadow: 0 10px 21px rgb(36 97 187 / 27%);
+  filter: brightness(1.05);
   transform: translateY(-1px);
 }
 
 .homefix-submit-btn:disabled {
-  opacity: 0.65;
   cursor: not-allowed;
-  transform: none;
+  filter: saturate(.72);
+  opacity: .68;
 }
 
-/* STATUS MESSAGE */
-
-.homefix-auth-status {
-  padding: 11px 13px;
-  border-radius: 8px;
-  background: #eef5ff;
-  color: #2456a4;
-  font-size: 13px;
-  line-height: 1.5;
-  overflow-wrap: anywhere;
+.homefix-spinner {
+  animation: homefix-spin .7s linear infinite;
+  border: 2px solid rgb(255 255 255 / 45%);
+  border-radius: 50%;
+  border-top-color: #fff;
+  height: 15px;
+  width: 15px;
 }
 
-/* SWITCH LOGIN / REGISTER */
+@keyframes homefix-spin {
+  to { transform: rotate(360deg); }
+}
 
 .homefix-auth-switch {
-  margin-top: 25px;
-  color: #7b879b;
-  text-align: center;
+  color: var(--auth-muted);
   font-size: 13px;
+  margin: 18px 0 0;
+  text-align: center;
 }
 
 .homefix-auth-switch button {
-  padding: 0;
-  border: none;
   background: transparent;
-  color: #2864c5;
-  font-size: inherit;
-  font-weight: 700;
+  border: 0;
+  color: #2867c4;
   cursor: pointer;
+  font: inherit;
+  font-weight: 740;
+  margin-left: 5px;
+  padding: 3px 2px;
 }
 
 .homefix-auth-switch button:hover {
@@ -219,331 +450,392 @@
 }
 
 .homefix-auth-footer {
-  margin-top: 35px;
-  color: #a0a9b8;
+  align-items: center;
+  color: #64748b;
+  display: flex;
   font-size: 11px;
-  text-align: center;
+  gap: 6px;
+  justify-content: center;
+  margin: 19px 0 0;
 }
 
-/* ==============================
-   RIGHT SIDE ILLUSTRATION PANEL
-============================== */
+.homefix-auth-footer i {
+  color: #4b9b74;
+  font-size: 12px;
+}
 
 .homefix-auth-right {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
+  background:
+    radial-gradient(ellipse at 86% 13%, rgb(117 174 244 / 40%), transparent 36%),
+    radial-gradient(ellipse at 3% 95%, rgb(30 81 156 / 48%), transparent 40%),
+    linear-gradient(145deg, #2c70c9 0%, #1854a2 53%, #143f83 100%);
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  min-width: 0;
   overflow: hidden;
-  padding: 45px 35px;
-  background: linear-gradient(145deg, #3479e4, #17499c);
-  color: #ffffff;
-  text-align: center;
+  padding: 54px 42px 58px;
+  position: relative;
+}
+
+.homefix-auth-right::before,
+.homefix-auth-right::after {
+  border: 1px solid rgb(255 255 255 / 10%);
+  border-radius: 50%;
+  content: "";
+  pointer-events: none;
+  position: absolute;
 }
 
 .homefix-auth-right::before {
-  content: "";
-  position: absolute;
-  top: -115px;
-  right: -95px;
-  width: 300px;
-  height: 300px;
-  border: 1px solid rgba(255, 255, 255, 0.13);
-  border-radius: 50%;
+  height: 460px;
+  right: -230px;
+  top: -225px;
+  width: 460px;
 }
 
 .homefix-auth-right::after {
-  content: "";
-  position: absolute;
-  bottom: -160px;
-  left: -100px;
-  width: 350px;
-  height: 350px;
-  border: 1px solid rgba(255, 255, 255, 0.13);
-  border-radius: 50%;
+  bottom: -315px;
+  height: 520px;
+  left: -250px;
+  width: 520px;
 }
 
-.homefix-art-circle {
-  position: absolute;
-  top: 50px;
-  left: 45px;
-  width: 75px;
-  height: 75px;
+.homefix-art-orb {
+  background: rgb(255 255 255 / 6%);
+  border: 1px solid rgb(255 255 255 / 9%);
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.07);
+  position: absolute;
+}
+
+.homefix-art-orb-one {
+  height: 52px;
+  left: 10%;
+  top: 16%;
+  width: 52px;
+}
+
+.homefix-art-orb-two {
+  bottom: 17%;
+  height: 27px;
+  right: 12%;
+  width: 27px;
 }
 
 .homefix-art-content {
+  max-width: 470px;
   position: relative;
-  z-index: 2;
   width: 100%;
+  z-index: 1;
+}
+
+.homefix-art-label {
+  align-items: center;
+  color: rgb(255 255 255 / 78%);
+  display: inline-flex;
+  font-size: 10px;
+  font-weight: 750;
+  gap: 8px;
+  letter-spacing: 1.75px;
+  margin-bottom: 15px;
+}
+
+.homefix-art-label-dot {
+  background: #9de3bd;
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px rgb(157 227 189 / 16%);
+  height: 6px;
+  width: 6px;
 }
 
 .homefix-art-content h2 {
-  margin: 0 0 15px;
-  color: #ffffff;
-  font-size: 29px;
-  font-weight: 750;
-  line-height: 1.35;
+  color: #fff;
+  font-size: clamp(32px, 3.5vw, 43px);
+  font-weight: 760;
+  letter-spacing: -1.6px;
+  line-height: 1.12;
+  margin: 0 0 12px;
 }
 
 .homefix-art-content > p {
-  max-width: 340px;
-  margin: 0 auto 30px;
-  color: rgba(255, 255, 255, 0.83);
+  color: rgb(255 255 255 / 92%);
   font-size: 14px;
-  line-height: 1.8;
+  line-height: 1.7;
+  margin: 0;
+  max-width: 355px;
 }
 
-/* CSS HOUSE ILLUSTRATION */
-
-.homefix-house-illustration {
-  position: relative;
-  width: 250px;
-  height: 210px;
-  margin: 10px auto 25px;
+.homefix-home-illustration {
+  margin: 6px -17px -2px;
 }
 
-.homefix-house-roof {
-  position: absolute;
-  top: 15px;
-  left: 43px;
-  width: 164px;
-  height: 125px;
-  border-top: 10px solid #ffd36b;
-  border-left: 10px solid #ffd36b;
-  border-radius: 9px 0 0 0;
-  transform: rotate(45deg) scale(0.78);
+.homefix-home-illustration svg {
+  display: block;
+  height: auto;
+  overflow: visible;
+  width: 100%;
 }
 
-.homefix-house {
-  position: absolute;
-  top: 82px;
-  left: 51px;
-  width: 148px;
-  height: 100px;
-  border: 7px solid #ffffff;
-  border-radius: 5px;
-  background: #eaf2ff;
-  box-shadow: 0 10px 25px rgba(5, 32, 78, 0.2);
-}
-
-.homefix-house-window {
-  position: absolute;
-  top: 17px;
-  left: 16px;
-  width: 35px;
-  height: 35px;
-  border: 4px solid #3479e4;
-  border-radius: 3px;
-  background: #b9ddff;
-}
-
-.homefix-house-window::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 12px;
-  width: 3px;
-  height: 27px;
-  background: #3479e4;
-}
-
-.homefix-house-window::after {
-  content: "";
-  position: absolute;
-  top: 11px;
-  left: 0;
-  width: 27px;
-  height: 3px;
-  background: #3479e4;
-}
-
-.homefix-house-door {
-  position: absolute;
-  right: 18px;
-  bottom: 0;
-  width: 35px;
-  height: 55px;
-  border: 4px solid #3479e4;
-  border-bottom: none;
-  border-radius: 5px 5px 0 0;
-  background: #ffd36b;
-}
-
-.homefix-house-door::after {
-  content: "";
-  position: absolute;
-  top: 25px;
-  right: 4px;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: #3479e4;
-}
-
-.homefix-house-base {
-  position: absolute;
-  bottom: 18px;
-  left: 25px;
-  width: 200px;
-  height: 8px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.3);
-}
-
-/* SERVICE LABELS */
-
-.homefix-service-pills {
+.homefix-service-list {
   display: flex;
   flex-wrap: wrap;
+  gap: 8px;
   justify-content: center;
-  gap: 10px;
-  margin-top: 20px;
+  margin-top: 3px;
 }
 
-.homefix-service-pills span {
-  padding: 9px 13px;
-  border: 1px solid rgba(255, 255, 255, 0.25);
+.homefix-service-list span {
+  align-items: center;
+  backdrop-filter: blur(8px);
+  background: rgb(255 255 255 / 10%);
+  border: 1px solid rgb(255 255 255 / 22%);
   border-radius: 30px;
-  background: rgba(255, 255, 255, 0.1);
-  color: #ffffff;
-  font-size: 12px;
-  font-weight: 600;
+  color: #fff;
+  display: inline-flex;
+  font-size: 11px;
+  font-weight: 620;
+  gap: 7px;
+  padding: 8px 12px;
 }
 
-.homefix-art-bottom {
+.homefix-service-list i {
+  color: #ffe09f;
+  font-size: 12px;
+}
+
+.homefix-trust-note {
+  align-items: center;
+  background: rgb(9 45 99 / 21%);
+  border: 1px solid rgb(255 255 255 / 12%);
+  border-radius: 13px;
+  display: flex;
+  gap: 11px;
+  margin: 23px auto 0;
+  max-width: 350px;
+  padding: 11px 14px;
+}
+
+.homefix-trust-icon {
+  align-items: center;
+  background: rgb(255 255 255 / 14%);
+  border-radius: 10px;
+  color: #bcebd0;
+  display: flex;
+  flex: 0 0 34px;
+  font-size: 16px;
+  height: 34px;
+  justify-content: center;
+}
+
+.homefix-trust-note strong,
+.homefix-trust-note small {
+  display: block;
+}
+
+.homefix-trust-note strong {
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.homefix-trust-note small {
+  color: rgb(255 255 255 / 88%);
+  font-size: 10px;
+  margin-top: 3px;
+}
+
+.homefix-art-copyright {
+  bottom: 20px;
+  color: rgb(255 255 255 / 72%);
+  font-size: 9px;
+  font-weight: 650;
+  left: 20px;
+  letter-spacing: 1.1px;
   position: absolute;
   right: 20px;
-  bottom: 20px;
-  left: 20px;
-  z-index: 2;
-  color: rgba(255, 255, 255, 0.72);
-  font-size: 11px;
-  letter-spacing: 0.4px;
+  text-align: center;
 }
 
-/* ==============================
-   RESPONSIVE DESIGN
-============================== */
+@media (max-width: 1000px) {
+  .homefix-auth-page {
+    padding: 22px;
+  }
 
-@media (max-width: 900px) {
+  .homefix-auth-card {
+    grid-template-columns: minmax(0, 1.04fr) minmax(0, .96fr);
+  }
+
   .homefix-auth-left {
-    padding: 38px 30px;
+    padding: 40px 32px 32px;
   }
 
   .homefix-auth-right {
-    padding: 35px 20px;
+    padding: 42px 25px 52px;
   }
 
-  .homefix-auth-heading {
-    font-size: 28px;
+  .homefix-role-options {
+    gap: 6px;
   }
 
-  .homefix-art-content h2 {
-    font-size: 25px;
+  .homefix-role-option {
+    gap: 5px;
+    padding: 8px 6px;
   }
 
-  .homefix-house-illustration {
-    transform: scale(0.9);
-    margin-top: 0;
-    margin-bottom: 10px;
+  .homefix-role-icon {
+    flex-basis: 27px;
+    height: 27px;
+    width: 27px;
+  }
+
+  .homefix-role-copy small {
+    font-size: 9px;
   }
 }
 
-@media (max-width: 650px) {
+@media (max-width: 760px) {
   .homefix-auth-page {
-    min-height: 100vh;
-    padding: 15px;
+    align-items: flex-start;
+    padding: 18px;
   }
 
   .homefix-auth-card {
     grid-template-columns: 1fr;
-    max-width: 440px;
-    min-height: auto;
-    border-radius: 18px;
+    max-width: 560px;
+    min-height: 0;
   }
 
   .homefix-auth-left {
-    padding: 32px 25px;
+    max-width: none;
+    padding: 36px clamp(22px, 7vw, 50px) 30px;
   }
 
   .homefix-brand {
     margin-bottom: 28px;
-    font-size: 23px;
   }
 
-  .homefix-auth-heading {
-    font-size: 27px;
+  .homefix-role-options {
+    gap: 8px;
+  }
+
+  .homefix-role-option {
+    min-height: 60px;
+    padding: 8px;
+  }
+
+  .homefix-role-icon {
+    flex-basis: 30px;
+    height: 30px;
+    width: 30px;
+  }
+
+  .homefix-role-copy strong {
+    font-size: 10px;
+  }
+
+  .homefix-role-copy small {
+    font-size: 9px;
   }
 
   .homefix-auth-right {
-    min-height: 390px;
-    padding: 35px 20px 50px;
+    min-height: 590px;
+    padding: 44px 34px 52px;
+  }
+
+  .homefix-art-content {
+    max-width: 430px;
+  }
+
+  .homefix-home-illustration {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+@media (max-width: 430px) {
+  .homefix-auth-page {
+    padding: 0;
+  }
+
+  .homefix-auth-card {
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    max-width: none;
+  }
+
+  .homefix-auth-left {
+    padding: 26px 20px 28px;
+  }
+
+  .homefix-brand {
+    margin-bottom: 25px;
+  }
+
+  .homefix-auth-heading h1 {
+    font-size: 29px;
+  }
+
+  .homefix-auth-heading {
+    margin-bottom: 19px;
+  }
+
+  .homefix-role-option {
+    min-height: 80px;
+    padding: 7px 3px;
+  }
+
+  .homefix-role-copy strong {
+    font-size: 10px;
+    white-space: normal;
+  }
+
+  .homefix-role-copy small {
+    display: none;
+  }
+
+  .homefix-role-check {
+    font-size: 10px;
+    position: absolute;
+    right: 6px;
+    top: 5px;
+  }
+
+  .homefix-auth-right {
+    min-height: 510px;
+    padding: 38px 23px 49px;
   }
 
   .homefix-art-content h2 {
-    font-size: 24px;
+    font-size: 35px;
   }
 
   .homefix-art-content > p {
     font-size: 13px;
-    margin-bottom: 15px;
   }
 
-  .homefix-house-illustration {
-    transform: scale(0.85);
-    margin-top: -5px;
-    margin-bottom: 0;
+  .homefix-home-illustration {
+    margin-top: 8px;
   }
 
-  .homefix-art-bottom {
-    bottom: 15px;
-  }
-}
-
-@media (max-width: 380px) {
-  .homefix-auth-left {
-    padding: 28px 19px;
-  }
-
-  .homefix-auth-heading {
-    font-size: 24px;
-  }
-
-  .homefix-auth-right {
-    min-height: 360px;
-  }
-
-  .homefix-service-pills {
+  .homefix-service-list {
     gap: 6px;
   }
 
-  .homefix-service-pills span {
-    padding: 8px 10px;
-    font-size: 11px;
+  .homefix-service-list span {
+    font-size: 10px;
+    padding: 7px 9px;
   }
 }
-/* ACCOUNT TYPE SELECT */
-.homefix-role-select {
-  width: 100%;
-  min-height: 48px;
-  padding: 12px 15px;
-  border: 1px solid #dce3ee;
-  border-radius: 9px;
-  outline: none;
-  background: #ffffff;
-  color: #26364d;
-  font-size: 14px;
-}
 
-.homefix-role-select:focus {
-  border-color: #3978df;
-  box-shadow: 0 0 0 3px rgba(57, 120, 223, 0.12);
-}
-
-.homefix-field-hint {
-  color: #7b879b;
-  font-size: 12px;
+@media (prefers-reduced-motion: reduce) {
+  .homefix-auth-page *,
+  .homefix-auth-page *::before,
+  .homefix-auth-page *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+  }
 }

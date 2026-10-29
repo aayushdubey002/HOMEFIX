@@ -1,4 +1,5 @@
 HELP.md
+var/homefix-documents/provider-verification/
 target/
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
@@ -31,3 +32,7 @@ build/
 
 ### VS Code ###
 .vscode/
+.env
+.env.txt
+.env.*
+!.env.example

@@ -1,7 +1,12 @@
 package com.homefix.api.controller;
 
 import com.homefix.api.dto.AuthRequest;
+import com.homefix.api.model.ServiceCategory;
 import com.homefix.api.model.User;
+import com.homefix.api.repository.CustomerProfileRepository;
+import com.homefix.api.repository.ProviderProfileRepository;
+import com.homefix.api.repository.ProviderSkillRepository;
+import com.homefix.api.repository.ServiceCategoryRepository;
 import com.homefix.api.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseEntity;
@@ -245,6 +250,20 @@ class AuthControllerTest {
     }
 
     private AuthController controller(UserRepository repository) {
+        CustomerProfileRepository customerProfiles =
+                mock(CustomerProfileRepository.class);
+        ProviderProfileRepository providerProfiles =
+                mock(ProviderProfileRepository.class);
+        ProviderSkillRepository providerSkills = mock(ProviderSkillRepository.class);
+        ServiceCategoryRepository categories = mock(ServiceCategoryRepository.class);
+        when(categories.findByServiceCodeIgnoreCase("AC REPAIR"))
+                .thenReturn(Optional.of(new ServiceCategory(
+                        "AC Repair",
+                        "ac-repair",
+                        "AC REPAIR",
+                        "Air-conditioner repair",
+                        java.math.BigDecimal.valueOf(700)
+                )));
         JwtEncoder encoder = mock(JwtEncoder.class);
         when(encoder.encode(any(JwtEncoderParameters.class))).thenReturn(
                 Jwt.withTokenValue("test-access-token")
@@ -256,7 +275,11 @@ class AuthControllerTest {
         return new AuthController(
                 repository,
                 encoder,
-                new BCryptPasswordEncoder()
+                new BCryptPasswordEncoder(),
+                customerProfiles,
+                providerProfiles,
+                providerSkills,
+                categories
         );
     }
 }

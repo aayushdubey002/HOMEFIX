@@ -12,6 +12,8 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
+import java.time.LocalDateTime;
+import java.math.BigDecimal;
 
 public interface BookingRepository extends JpaRepository<BookingEntity, Long> {
 
@@ -34,6 +36,8 @@ public interface BookingRepository extends JpaRepository<BookingEntity, Long> {
     // Provider: assigned bookings count
     long countByProvider(User provider);
 
+    long countByProviderAndStatusIgnoreCase(User provider, String status);
+
     // Customer: total bookings
     long countByUser(User user);
 
@@ -42,4 +46,29 @@ public interface BookingRepository extends JpaRepository<BookingEntity, Long> {
 
     // Search by booking ID
     Optional<BookingEntity> findByBookingId(String bookingId);
+
+    List<BookingEntity> findAllByOrderByCreatedAtDesc();
+
+    long countByStatusIgnoreCase(String status);
+
+    @Query("SELECT COALESCE(SUM(b.price), 0) FROM BookingEntity b "
+            + "WHERE UPPER(b.status) = 'COMPLETED'")
+    BigDecimal sumCompletedBookingPrices();
+
+    @Query("SELECT COALESCE(SUM(b.price), 0) FROM BookingEntity b "
+            + "WHERE b.provider.id = :providerId AND UPPER(b.status) = 'COMPLETED'")
+    BigDecimal sumProviderCompletedBookingPrices(@Param("providerId") Long providerId);
+
+    @Query("""
+            SELECT CASE WHEN COUNT(b) > 0 THEN true ELSE false END
+            FROM BookingEntity b
+            WHERE b.provider.id = :providerId
+              AND b.preferredAt < :requestedEnd
+              AND b.preferredAt > :requestedStartMinusDuration
+              AND UPPER(b.status) NOT IN ('CANCELLED', 'REJECTED')
+            """)
+    boolean hasOverlappingAppointment(
+            @Param("providerId") Long providerId,
+            @Param("requestedEnd") LocalDateTime requestedEnd,
+            @Param("requestedStartMinusDuration") LocalDateTime requestedStartMinusDuration);
 }

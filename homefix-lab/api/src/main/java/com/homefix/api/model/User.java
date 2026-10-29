@@ -5,10 +5,20 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Index;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.time.Instant;
+
 @Entity
-@Table(name = "users")
+@Table(name = "users",
+        indexes = {
+                @Index(name = "idx_users_role", columnList = "role"),
+                @Index(name = "idx_users_active", columnList = "active")
+        },
+        uniqueConstraints = @jakarta.persistence.UniqueConstraint(
+                name = "uk_users_email", columnNames = "email"))
 public class User {
 
     @Id
@@ -16,17 +26,32 @@ public class User {
     private Long id;
 
     private String fullName;
+    @Column(nullable = false, length = 254)
     private String email;
+    @Column(nullable = false)
     private String password;
 
     // CUSTOMER or PROVIDER
     private String role = "CUSTOMER";
+    @Column(nullable = false)
+    private boolean active = true;
+    @Column(nullable = false)
+    private boolean providerApproved;
 
     // Provider details
     private String phone;
     private String serviceCategory;
     private String experience;
     private String serviceArea;
+    @Column(nullable = false, updatable = false)
+    private Instant createdAt = Instant.now();
+    @Column(nullable = false)
+    private Instant updatedAt = Instant.now();
+
+    @jakarta.persistence.PreUpdate
+    void updateTimestamp() {
+        updatedAt = Instant.now();
+    }
 
     public User() {
     }
@@ -54,6 +79,7 @@ public class User {
         this.fullName = fullName;
     }
 
+    @JsonIgnore
     public String getEmail() {
         return email;
     }
@@ -79,6 +105,7 @@ public class User {
         this.role = role;
     }
 
+    @JsonIgnore
     public String getPhone() {
         return phone;
     }
@@ -87,6 +114,7 @@ public class User {
         this.phone = phone;
     }
 
+    @JsonIgnore
     public String getServiceCategory() {
         return serviceCategory;
     }
@@ -95,6 +123,7 @@ public class User {
         this.serviceCategory = serviceCategory;
     }
 
+    @JsonIgnore
     public String getExperience() {
         return experience;
     }
@@ -103,11 +132,40 @@ public class User {
         this.experience = experience;
     }
 
+    @JsonIgnore
     public String getServiceArea() {
         return serviceArea;
     }
 
     public void setServiceArea(String serviceArea) {
         this.serviceArea = serviceArea;
+    }
+
+    @JsonIgnore
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    @JsonIgnore
+    public boolean isProviderApproved() {
+        return providerApproved;
+    }
+
+    public void setProviderApproved(boolean providerApproved) {
+        this.providerApproved = providerApproved;
+    }
+
+    @JsonIgnore
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
+
+    @JsonIgnore
+    public Instant getUpdatedAt() {
+        return updatedAt;
     }
 }

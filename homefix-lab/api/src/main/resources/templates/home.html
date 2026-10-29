@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#102b46">
+  <title>HomeFix | Trusted home services</title>
+  <style>
+    :root { font-family: Inter, "Segoe UI", Arial, sans-serif; color: #17324d; background: #f4f8fb; }
+    body { margin: 0; }
+    header { display: flex; justify-content: space-between; align-items: center; padding: 1.25rem clamp(1rem, 6vw, 6rem); background: #fff; }
+    .brand { color: #102b46; font-size: 1.35rem; font-weight: 800; text-decoration: none; }
+    .brand span { color: #0b9b91; }
+    main { max-width: 1100px; margin: auto; padding: clamp(3rem, 10vw, 8rem) 1.5rem; }
+    .hero { max-width: 720px; }
+    .eyebrow { color: #087c79; font-size: .8rem; font-weight: 700; letter-spacing: .12em; }
+    h1 { margin: 1rem 0; color: #102b46; font-size: clamp(2.6rem, 7vw, 5rem); line-height: 1.04; }
+    p { color: #53677b; font-size: 1.15rem; line-height: 1.7; }
+    .actions { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 2rem; }
+    .button { display: inline-block; border-radius: .7rem; padding: .9rem 1.25rem; background: #087f83; color: #fff; font-weight: 700; text-decoration: none; }
+    .button.secondary { border: 1px solid #c9d7e0; background: #fff; color: #17324d; }
+    .services { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-top: 3rem; }
+    .service { padding: 1.2rem; border: 1px solid #e1eaf0; border-radius: .9rem; background: #fff; }
+    .service h2 { margin: 0 0 .4rem; font-size: 1rem; }
+    .service p { margin: 0; font-size: .9rem; }
+    footer { padding: 1.5rem; color: #6b7f91; text-align: center; }
+  </style>
+</head>
+<body>
+<header>
+  <a class="brand" href="/">Home<span>Fix</span></a>
+  <a class="button secondary" th:href="${frontendUrl} + '/login'">Sign in</a>
+</header>
+<main>
+  <section class="hero">
+    <span class="eyebrow">HOME SERVICES, MADE SIMPLE</span>
+    <h1>Trusted help for the place you call home.</h1>
+    <p>Find local home-service professionals, request a booking and follow its progress from one convenient place.</p>
+    <div class="actions">
+      <a class="button" th:href="${frontendUrl}">Explore HomeFix</a>
+      <a class="button secondary" th:href="${frontendUrl} + '/login'">Join as a professional</a>
+    </div>
+  </section>
+  <section class="services" aria-label="Available service categories">
+    <article class="service"><h2>Electrical</h2><p>Wiring, lighting and repairs.</p></article>
+    <article class="service"><h2>Plumbing</h2><p>Pipes, taps and drains.</p></article>
+    <article class="service"><h2>Carpentry</h2><p>Furniture and fixtures.</p></article>
+    <article class="service"><h2>AC repair</h2><p>Cooling and maintenance.</p></article>
+    <article class="service"><h2>Appliances</h2><p>Home appliance repairs.</p></article>
+    <article class="service"><h2>Cleaning</h2><p>A fresh, tidy home.</p></article>
+  </section>
+</main>
+<footer>HomeFix — local professionals, straightforward bookings.</footer>
+</body>
+</html>

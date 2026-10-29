@@ -1,7 +1,15 @@
 package com.homefix.api.controller;
 
 import com.homefix.api.dto.AuthRequest;
+import com.homefix.api.model.CustomerProfile;
+import com.homefix.api.model.ProviderProfile;
+import com.homefix.api.model.ProviderSkill;
+import com.homefix.api.model.ServiceCategory;
 import com.homefix.api.model.User;
+import com.homefix.api.repository.CustomerProfileRepository;
+import com.homefix.api.repository.ProviderProfileRepository;
+import com.homefix.api.repository.ProviderSkillRepository;
+import com.homefix.api.repository.ServiceCategoryRepository;
 import com.homefix.api.repository.UserRepository;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -13,6 +21,7 @@ import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
@@ -32,22 +41,6 @@ public class AuthController {
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$",
                     Pattern.CASE_INSENSITIVE);
 
-    private static final Set<String> PROVIDER_CATEGORIES = Set.of(
-            "ELECTRICIAN",
-            "ELECTRICAL",
-            "PLUMBER",
-            "PLUMBING",
-            "AC_REPAIR",
-            "AIR_CONDITIONING",
-            "AC_SERVICE",
-            "AC_REPAIR_SERVICE",
-            "CLEANING",
-            "HOME_CLEANING",
-            "CARPENTER",
-            "CARPENTRY",
-            "PAINTING"
-    );
-
     private static final Set<String> PROVIDER_EXPERIENCE = Set.of(
             "LESS_THAN_1_YEAR",
             "1_3_YEARS",
@@ -58,19 +51,32 @@ public class AuthController {
     private final UserRepository userRepository;
     private final JwtEncoder jwtEncoder;
     private final PasswordEncoder passwordEncoder;
+    private final CustomerProfileRepository customerProfileRepository;
+    private final ProviderProfileRepository providerProfileRepository;
+    private final ProviderSkillRepository providerSkillRepository;
+    private final ServiceCategoryRepository categoryRepository;
 
     public AuthController(
             UserRepository userRepository,
             JwtEncoder jwtEncoder,
-            PasswordEncoder passwordEncoder
+            PasswordEncoder passwordEncoder,
+            CustomerProfileRepository customerProfileRepository,
+            ProviderProfileRepository providerProfileRepository,
+            ProviderSkillRepository providerSkillRepository,
+            ServiceCategoryRepository categoryRepository
     ) {
         this.userRepository = userRepository;
         this.jwtEncoder = jwtEncoder;
         this.passwordEncoder = passwordEncoder;
+        this.customerProfileRepository = customerProfileRepository;
+        this.providerProfileRepository = providerProfileRepository;
+        this.providerSkillRepository = providerSkillRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     // REGISTER
     @PostMapping("/register")
+    @Transactional
     public ResponseEntity<Map<String, Object>> register(
             @RequestBody AuthRequest request) {
 
@@ -152,14 +158,6 @@ public class AuthController {
                 return ResponseEntity.badRequest().body(response);
             }
 
-            String category = normalizeProviderValue(
-                    request.getServiceCategory()
-            );
-            if (!PROVIDER_CATEGORIES.contains(category)) {
-                response.put("message", "Select a supported service category.");
-                return ResponseEntity.badRequest().body(response);
-            }
-
             if (request.getExperience() == null
                     || request.getExperience().isBlank()) {
                 response.put(
@@ -196,6 +194,19 @@ public class AuthController {
             return ResponseEntity.badRequest().body(response);
         }
 
+        Optional<ServiceCategory> providerCategory = Optional.empty();
+        if (role.equals("PROVIDER")) {
+            String requestedCategory = request.getServiceCategory().trim();
+            String normalizedCategoryCode = categoryCode(requestedCategory);
+            providerCategory = categoryRepository.findByServiceCodeIgnoreCase(requestedCategory)
+                    .or(() -> categoryRepository.findByServiceCodeIgnoreCase(normalizedCategoryCode))
+                    .or(() -> categoryRepository.findBySlugIgnoreCase(requestedCategory));
+            if (providerCategory.isEmpty() || !providerCategory.get().isActive()) {
+                response.put("message", "The selected service category is unavailable.");
+                return ResponseEntity.badRequest().body(response);
+            }
+        }
+
         // Create user
         User user = new User();
 
@@ -219,9 +230,23 @@ public class AuthController {
             user.setServiceArea(request.getServiceArea().trim());
         }
 
-        userRepository.save(user);
+        User savedUser = userRepository.save(user);
+        if (role.equals("CUSTOMER")) {
+            customerProfileRepository.save(new CustomerProfile(savedUser));
+        } else {
+            ServiceCategory selectedCategory = providerCategory.orElseThrow();
+            ProviderProfile profile = providerProfileRepository.save(
+                    new ProviderProfile(savedUser));
+            providerSkillRepository.save(new ProviderSkill(
+                    profile,
+                    selectedCategory,
+                    selectedCategory.getStartingPrice()
+            ));
+        }
 
-        response.put("message", "Registration successful.");
+        response.put("message", role.equals("PROVIDER")
+                ? "Registration submitted. Your provider profile is awaiting admin verification."
+                : "Registration successful.");
         response.put("role", role);
 
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -272,6 +297,10 @@ public class AuthController {
         }
 
         User user = optionalUser.get();
+        if (!user.isActive()) {
+            response.put("message", "This account is inactive. Contact HomeFix support.");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
+        }
 
         String storedPassword = user.getPassword();
 
@@ -358,7 +387,8 @@ public class AuthController {
         }
 
         String role = normalizedRole(user.getRole());
-        if (!"CUSTOMER".equals(role) && !"PROVIDER".equals(role)) {
+        if (!"CUSTOMER".equals(role) && !"PROVIDER".equals(role)
+                && !"ADMIN".equals(role)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(Map.of("message", "Account role is not supported."));
         }
@@ -378,6 +408,7 @@ public class AuthController {
             userData.put("serviceCategory", user.getServiceCategory());
             userData.put("experience", user.getExperience());
             userData.put("serviceArea", user.getServiceArea());
+            userData.put("providerApproved", user.isProviderApproved());
         }
         return userData;
     }
@@ -399,5 +430,20 @@ public class AuthController {
                 .replace('-', '_')
                 .replace(' ', '_')
                 .toUpperCase(Locale.ROOT);
+    }
+
+    private String categoryCode(String category) {
+        return switch (normalizeProviderValue(category)) {
+            case "ELECTRICIAN", "ELECTRICAL" -> "ELECTRICAL";
+            case "PLUMBER", "PLUMBING" -> "PLUMBING";
+            case "AC REPAIR", "AC_REPAIR", "AIR CONDITIONING", "AC SERVICE",
+                    "AC REPAIR SERVICE" -> "AC REPAIR";
+            case "HOME CLEANING", "CLEANING" -> "CLEANING";
+            case "CARPENTER", "CARPENTRY" -> "CARPENTER";
+            case "APPLIANCE REPAIR", "APPLIANCE_REPAIR",
+                    "APPLIANCE REPAIR SERVICE", "APPLIANCE_REPAIR_SERVICE" ->
+                    "APPLIANCE REPAIR";
+            default -> normalizeProviderValue(category);
+        };
     }
 }
