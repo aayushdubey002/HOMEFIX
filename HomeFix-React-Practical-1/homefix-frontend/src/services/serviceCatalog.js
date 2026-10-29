@@ -50,7 +50,7 @@ export function resolveServiceImageUrl(imageUrl) {
       || !/^\/api\/services\/catalog\/images\/[0-9a-f-]{36}\.(png|jpg)$/i.test(imageUrl)) {
     return "";
   }
-  const apiBase = import.meta.env.VITE_API_BASE_URL || "http://localhost:8083/api";
+  const apiBase = import.meta.env.VITE_API_BASE_URL || "https://homefix-api-humf.onrender.com/api";
   const browserOrigin = typeof window === "undefined" ? "http://localhost" : window.location.origin;
   return new URL(imageUrl, new URL(apiBase, browserOrigin).origin).toString();
 }

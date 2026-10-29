@@ -1,6 +1,6 @@
 # HomeFix frontend
 
-The frontend uses `http://localhost:8083/api` for local API requests. This is
+The frontend uses `https://homefix-api-humf.onrender.com/api` for local API requests. This is
 configured in `.env.local`; `.env.example` is a safe template containing no
 credentials or secrets.
 

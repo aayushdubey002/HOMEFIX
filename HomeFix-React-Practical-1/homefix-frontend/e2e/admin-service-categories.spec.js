@@ -191,5 +191,5 @@ test("admin-uploaded service image is saved and shown in the customer catalog", 
   await page.reload();
   await expect(page).toHaveURL(/\/customer$/);
   await expect(page.locator(".customer-service-card .customer-service-image").first())
-    .toHaveAttribute("src", `http://localhost:8083${uploadedUrl}`);
+    .toHaveAttribute("src", `https://homefix-api-humf.onrender.com/api${uploadedUrl}`);
 });

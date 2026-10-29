@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || "http://localhost:8083/api";
+  import.meta.env.VITE_API_BASE_URL || "https://homefix-api-humf.onrender.com/api";
 
 const AUTH_TOKEN_KEY = "homefixAccessToken";
 const multipartRequestConfig = { headers: { "Content-Type": undefined } };
